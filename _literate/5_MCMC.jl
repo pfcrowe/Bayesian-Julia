@@ -86,7 +86,7 @@
 
 # Monte Carlo methods have the underlying concept of using randomness to solve problems that can be deterministic in principle.
 # They are often used in physical and mathematical problems and are most useful when it is difficult or impossible to use other approaches.
-# Monte Carlo methods are used mainly in three classes of problems: optimization, numerical integration and generating sample from a
+# Monte Carlo methods are used mainly in three classes of problems: optimization, numerical integration and generating samples from a
 # probability distribution.
 
 # The idea for the method came to Ulam while playing solitaire during his recovery from surgery, as he thought about playing hundreds
@@ -407,15 +407,15 @@ mean(summarystats(chain_met)[:, :ess]) / S
 
 # ##### Metropolis -- Visual Intuition
 
-# I believe that a good visual intuition, even if you have not understood any mathematical formula, is the key for you to start a
+# I believe that a good visual intuition, even if you have not understood any mathematical formulae, is the key for you to start a
 # fruitful learning journey. So I made some animations!
 
-# The animation in figure below shows the first 100 simulations of the Metropolis algorithm used to generate `X_met`.
+# The animation in the figure below shows the first 100 simulations of the Metropolis algorithm used to generate `X_met`.
 # Note that in several iterations the proposal is rejected and the algorithm samples the parameters $\theta_1$ and $\theta_2$
 # from the previous state (which becomes the current one, since the proposal is refused). The blue-filled ellipsis represents
 # the 90% HPD of our toy example's bivariate normal distribution.
 
-# Note: `HPD` stands for *Highest Probability Density* (which in our case the posterior's 90% probability range).
+# Note: `HPD` stands for *Highest Probability Density* (which in our case is the posterior's 90% probability range).
 
 plt = covellipse(μ, Σ,
     n_std=1.64, # 5% - 95% quantiles
@@ -458,7 +458,7 @@ savefig(joinpath(@OUTPUT, "met_first1000.svg")); # hide
 # \fig{met_first1000}
 # \center{*First 1,000 Samples Generated from the Metropolis Algorithm after warm-up*} \\
 
-# And, finally, lets take a look in the all 9,000 samples generated after the warm-up of 1,000 iterations.
+# And, finally, lets take a look at all 9,000 samples generated after the warm-up of 1,000 iterations.
 
 scatter((X_met[warmup:end, 1], X_met[warmup:end, 2]),
          label=false, mc=:red, ma=0.3,
@@ -584,14 +584,14 @@ function gibbs(S::Int64, ρ::Float64;
 end
 
 # Generally a Gibbs sampler is not implemented in this way. Here I coded the Gibbs algorithm so that it samples a parameter for each iteration.
-# To be more computationally efficient we would sample all parameters are on each iteration. I did it on purpose because I want
+# To be more computationally efficient we would sample all parameters on each iteration. I did it on purpose because I want
 # to show in the animations the real trajectory of the Gibbs sampler in the sample space (vertical and horizontal, not diagonal).
-# So to remedy this I will provide `gibbs()` double the ammount of `S` (20,000 in total). Also take notice that we are now proposing
+# So to remedy this I will provide `gibbs()` double the amount of `S` (20,000 in total). Also take notice that we are now proposing
 # new parameters' values conditioned on other parameters, so there is not an acceptance/rejection rule here.
 
 X_gibbs = gibbs(S * 2, ρ);
 
-# As before lets' take a quick peek into `X_gibbs`, we'll see it's a matrix of $X$ and $Y$ values as columns and the time $t$ as rows:
+# As before let's take a quick peek into `X_gibbs`, we'll see it's a matrix of $X$ and $Y$ values as columns and the time $t$ as rows:
 
 X_gibbs[1:10, :]
 
@@ -607,8 +607,8 @@ summarystats(chain_gibbs)
 # Both of `X` and `Y` have mean close to 0 and standard deviation close to 1 (which
 # are the theoretical values).
 # Take notice of the `ess` (effective sample size - ESS) that is around 2,100.
-# Since we used `S * 2` as the number of samples, in order for we to compare with Metropolis,
-# we would need to divide the ESS by 2. So our ESS is between 1,000, which is similar
+# Since we used `S * 2` as the number of samples, in order for us to compare with Metropolis,
+# we would need to divide the ESS by 2. So our ESS is near 1,000, which is similar
 # to Metropolis' ESS.
 # Now let's calculate the efficiency of our Gibbs algorithm by dividing
 # the ESS by the number of sampling iterations that we've performed also
@@ -623,8 +623,8 @@ summarystats(chain_gibbs)
 
 # Oh yes, we have animations for Gibbs also!
 
-# The animation in figure below shows the first 100 simulations of the Gibbs algorithm used to generate `X_gibbs`.
-# Note that all proposals are accepted now, so the at each iteration we sample new parameters values.
+# The animation in the figure below shows the first 100 simulations of the Gibbs algorithm used to generate `X_gibbs`.
+# Note that all proposals are accepted now, so at each iteration we sample new parameter values.
 # The blue-filled ellipsis represents the 90% HPD of our toy example's bivariate normal distribution.
 
 plt = covellipse(μ, Σ,
@@ -666,7 +666,7 @@ savefig(joinpath(@OUTPUT, "gibbs_first1000.svg")); # hide
 # \fig{gibbs_first1000}
 # \center{*First 1,000 Samples Generated from the Gibbs Algorithm after warm-up*} \\
 
-# And, finally, lets take a look in the all 9,000 samples generated after the warm-up of 1,000 iterations.
+# And, finally, lets take a look at all 9,000 samples generated after the warm-up of 1,000 iterations.
 
 scatter((X_gibbs[2 * warmup:end, 1], X_gibbs[2 * warmup:end, 2]),
          label=false, mc=:red, ma=0.3,
@@ -692,7 +692,7 @@ savefig(joinpath(@OUTPUT, "gibbs_all.svg")); # hide
 # distribution $X$ and $Y$ that we used in the previous examples, but now with **4 Markov chains in parallel
 # with different starting points**[^markovparallel].
 
-# First, let's defined 4 different pairs of starting points using a nice Cartesian product
+# First, let's define 4 different pairs of starting points using a nice Cartesian product
 # from Julia's `Base.Iterators`:
 
 const starts = Iterators.product((-2.5, 2.5), (2.5, -2.5)) |> collect
@@ -1248,7 +1248,7 @@ savefig(joinpath(@OUTPUT, "traceplot_bad_chain.svg")); # hide
 # [^propto]: the symbol $\propto$ (`\propto`) should be read as "proportional to".
 # [^warmup]: some references call this process *burnin*.
 # [^metropolis]: if you want a better explanation of the Metropolis and Metropolis-Hastings algorithms I suggest to see Chib & Greenberg (1995).
-# [^numerical]: Due to easier computational complexity and to avoid [numeric overflow](https://en.wikipedia.org/wiki/Integer_overflow) we generally use sum of logs instead of multiplications, specially when dealing with probabilities, *i.e.* $\mathbb{R} \in [0, 1]$.
+# [^numerical]: Due to easier computational complexity and to avoid [numeric overflow](https://en.wikipedia.org/wiki/Integer_overflow) we generally use sum of logs instead of multiplications, especially when dealing with probabilities, *i.e.* $\mathbb{R} \in [0, 1]$.
 # [^mcmcchains]: this is one of the packages of Turing's ecosystem. I recommend you to take a look into [4. **How to use Turing**](/pages/4_Turing/).
 # [^gibbs]: if you want a better explanation of the Gibbs algorithm I suggest to see Casella & George (1992).
 # [^gibbs2]: this will be clear in the animations and images.
